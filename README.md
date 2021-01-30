@@ -20,7 +20,8 @@ Just clone this repository, run composer install and start the application with
 ./bin/console doctrine:schema:update --force
 ```
 
-Open `http://localhost/8000`, make necessary changes to 
+Open `http://localhost/8000`, see `src/Controller/IndexController.php` for detailed 
+instructions.
 
 ## Authors
 
