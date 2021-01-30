@@ -27,7 +27,7 @@ class InvitationRepository extends ServiceEntityRepository
     public function latestInvitations()
     {
         return $this->createQueryBuilder('i')
-            ->join('i.signers', 's')
+            ->join('i.signer', 's')
             ->groupBy('s.id')
             ->orderBy('i.sentAt', 'DESC')
             ->getQuery()

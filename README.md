@@ -15,6 +15,13 @@ So this repository contains simple example about that.
 Just clone this repository, run composer install and start the application with
 `symfony serve` command.
 
+```
+./bin/console doctrine:schema:create
+./bin/console doctrine:schema:update --force
+```
+
+Open `http://localhost/8000`, make necessary changes to 
+
 ## Authors
 
 * [Tarmo Leppänen](https://github.com/tarlepp)

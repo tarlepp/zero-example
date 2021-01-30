@@ -25,14 +25,9 @@ class Invitation
     private $sentAt;
 
     /**
-     * @ORM\OneToMany(targetEntity=Signer::class, mappedBy="Invitations")
+     * @ORM\ManyToOne(targetEntity=Signer::class, inversedBy="invitations")
      */
-    private $signers;
-
-    public function __construct()
-    {
-        $this->signers = new ArrayCollection();
-    }
+    private $signer;
 
     public function getId(): ?int
     {
@@ -51,32 +46,14 @@ class Invitation
         return $this;
     }
 
-    /**
-     * @return Collection|Signer[]
-     */
-    public function getSigners(): Collection
+    public function getSigner(): ?Signer
     {
-        return $this->signers;
+        return $this->signer;
     }
 
-    public function addSigner(Signer $signer): self
+    public function setSigner(?Signer $signer): self
     {
-        if (!$this->signers->contains($signer)) {
-            $this->signers[] = $signer;
-            $signer->setInvitations($this);
-        }
-
-        return $this;
-    }
-
-    public function removeSigner(Signer $signer): self
-    {
-        if ($this->signers->removeElement($signer)) {
-            // set the owning side to null (unless already changed)
-            if ($signer->getInvitations() === $this) {
-                $signer->setInvitations(null);
-            }
-        }
+        $this->signer = $signer;
 
         return $this;
     }

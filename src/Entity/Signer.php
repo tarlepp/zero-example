@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use App\Repository\SignerRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -23,9 +25,14 @@ class Signer
     private $name;
 
     /**
-     * @ORM\ManyToOne(targetEntity=Invitation::class, inversedBy="signers")
+     * @ORM\OneToMany(targetEntity=Invitation::class, mappedBy="signer")
      */
-    private $Invitations;
+    private $invitations;
+
+    public function __construct()
+    {
+        $this->invitations = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -44,14 +51,32 @@ class Signer
         return $this;
     }
 
-    public function getInvitations(): ?Invitation
+    /**
+     * @return Collection|Invitation[]
+     */
+    public function getInvitations(): Collection
     {
-        return $this->Invitations;
+        return $this->invitations;
     }
 
-    public function setInvitations(?Invitation $Invitations): self
+    public function addInvitation(Invitation $invitation): self
     {
-        $this->Invitations = $Invitations;
+        if (!$this->invitations->contains($invitation)) {
+            $this->invitations[] = $invitation;
+            $invitation->setSigner($this);
+        }
+
+        return $this;
+    }
+
+    public function removeInvitation(Invitation $invitation): self
+    {
+        if ($this->invitations->removeElement($invitation)) {
+            // set the owning side to null (unless already changed)
+            if ($invitation->getSigner() === $this) {
+                $invitation->setSigner(null);
+            }
+        }
 
         return $this;
     }
